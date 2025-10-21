@@ -1,0 +1,46 @@
+
+.blue-box {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.blue-box-header {
+    background-color: #2f80d0;
+    color: white;
+    padding: 8px 15px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.blue-box-body {
+    padding: 20px;
+    background: #fff;
+}
+.btn-home,
+.btn-logout {
+    border: 1px solid red;
+    background: white;
+    color: red;
+    font-size: 14px;
+    padding: 2px 10px;
+    text-decoration: none;
+    margin-left: 5px;
+}
+.btn-home:hover,
+.btn-logout:hover {
+    background: red;
+    color: white;
+}
+body {
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+    padding-bottom: 60px; /* same as footer height */
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
