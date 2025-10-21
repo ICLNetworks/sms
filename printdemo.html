@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Print Page Break Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      line-height: 1.6;
+    }
+
+    .page {
+      page-break-after: always;
+    }
+
+    @media print {
+      body {
+        margin: 0;
+      }
+
+      .page {
+        page-break-after: always;
+        page-break-inside: avoid;
+        padding: 20mm;
+      }
+
+      h1 {
+        font-size: 18pt;
+      }
+
+      p {
+        font-size: 12pt;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <h1>Page 1 Title</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet tellus ut nulla facilisis accumsan. Aenean ac nisi nec nunc congue tempor. Sed fermentum mauris a laoreet porttitor. Donec at porta risus. Quisque nec sem nec purus malesuada feugiat. Sed mattis justo lorem, sed gravida lacus porttitor in. Nulla facilisi. In laoreet sapien in sem rutrum, sit amet lacinia odio eleifend.</p>
+    
+    <p>Curabitur eu nisl sit amet odio scelerisque lobortis. Suspendisse in finibus mauris. Suspendisse nec nibh vitae orci malesuada porta. Donec laoreet enim eget nisi commodo, at congue felis iaculis. Pellentesque vel erat eros. Integer varius sapien at feugiat cursus. In id ante eu nulla convallis ultrices. In at magna vel augue tincidunt malesuada ut in lacus.</p>
+
+    <p>More filler text to simulate page 1 content. Keep scrolling...</p>
+    <p>Even more content here. This will push it to the end of one A4 page...</p>
+  </div>
+
+  <div class="page">
+    <h1>Page 2 Title</h1>
+    <p>This is the beginning of the second page. The page should break cleanly here when printed.</p>
+    
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia lorem vitae lorem pretium, non cursus purus suscipit. Pellentesque elementum orci ut ipsum blandit accumsan. Integer dapibus quam sed bibendum fermentum. Sed tincidunt tincidunt libero, in pulvinar magna accumsan a. Suspendisse fringilla urna vel lectus hendrerit feugiat.</p>
+
+    <p>Extra content to fill the second page for testing...</p>
+  </div>
+  <button onclick="window.print()">Print out</button>
+
+</body>
+</html>

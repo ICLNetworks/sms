@@ -1,0 +1,105 @@
+[01-Oct-2025 12:29:38 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:318
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 318
+[01-Oct-2025 12:30:15 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:318
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 318
+[01-Oct-2025 12:40:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:319
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 319
+[01-Oct-2025 12:41:47 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:319
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 319
+[01-Oct-2025 12:42:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:319
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 319
+[01-Oct-2025 12:42:45 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:319
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 319
+[01-Oct-2025 12:44:33 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:319
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 319
+[01-Oct-2025 12:46:26 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:325
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 325
+[01-Oct-2025 14:00:02 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:309
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 309
+[01-Oct-2025 14:01:23 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, boolean given in /home/iclsoftw/public_html/sms/expenses.php on line 73
+[01-Oct-2025 14:03:59 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:236
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 236
+[01-Oct-2025 14:07:16 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:242
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 242
+[01-Oct-2025 14:08:07 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:242
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 242
+[01-Oct-2025 14:09:13 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:242
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 242
+[01-Oct-2025 14:09:17 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:242
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 242
+[01-Oct-2025 14:09:26 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:242
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 242
+[01-Oct-2025 14:13:34 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:242
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 242
+[01-Oct-2025 14:14:20 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function str_contains() in /home/iclsoftw/public_html/sms/expenses.php:255
+Stack trace:
+#0 {main}
+  thrown in /home/iclsoftw/public_html/sms/expenses.php on line 255
+[01-Oct-2025 14:22:33 UTC] PHP Warning:  include(cu_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 49
+[01-Oct-2025 14:22:33 UTC] PHP Warning:  include(cu_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 49
+[01-Oct-2025 14:22:33 UTC] PHP Warning:  include(): Failed opening 'cu_expenses.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/iclsoftw/public_html/sms/expenses.php on line 49
+[01-Oct-2025 14:22:33 UTC] PHP Warning:  include(view_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[01-Oct-2025 14:22:33 UTC] PHP Warning:  include(view_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[01-Oct-2025 14:22:33 UTC] PHP Warning:  include(): Failed opening 'view_expenses.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[01-Oct-2025 14:22:34 UTC] PHP Warning:  include(im_ex_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:22:34 UTC] PHP Warning:  include(im_ex_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:22:34 UTC] PHP Warning:  include(): Failed opening 'im_ex_expenses.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:28:12 UTC] PHP Warning:  include(view_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[01-Oct-2025 14:28:12 UTC] PHP Warning:  include(view_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[01-Oct-2025 14:28:12 UTC] PHP Warning:  include(): Failed opening 'view_expenses.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[01-Oct-2025 14:28:13 UTC] PHP Warning:  include(cu_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 49
+[01-Oct-2025 14:28:13 UTC] PHP Warning:  include(cu_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 49
+[01-Oct-2025 14:28:13 UTC] PHP Warning:  include(): Failed opening 'cu_expenses.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/iclsoftw/public_html/sms/expenses.php on line 49
+[01-Oct-2025 14:28:13 UTC] PHP Warning:  include(im_ex_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:28:13 UTC] PHP Warning:  include(im_ex_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:28:13 UTC] PHP Warning:  include(): Failed opening 'im_ex_expenses.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:32:08 UTC] PHP Warning:  include(im_ex_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:32:08 UTC] PHP Warning:  include(im_ex_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:32:08 UTC] PHP Warning:  include(): Failed opening 'im_ex_expenses.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/iclsoftw/public_html/sms/expenses.php on line 53
+[01-Oct-2025 14:32:13 UTC] PHP Warning:  include(view_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[01-Oct-2025 14:32:13 UTC] PHP Warning:  include(view_expenses.php): failed to open stream: No such file or directory in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[01-Oct-2025 14:32:13 UTC] PHP Warning:  include(): Failed opening 'view_expenses.php' for inclusion (include_path='.:/opt/alt/php72/usr/share/pear') in /home/iclsoftw/public_html/sms/expenses.php on line 51
+[02-Oct-2025 06:22:57 UTC] PHP Notice:  Undefined index: occ in /home/iclsoftw/public_html/sms/postadmission.php on line 86
+[02-Oct-2025 06:22:57 UTC] PHP Notice:  Undefined index: income in /home/iclsoftw/public_html/sms/postadmission.php on line 87
+[02-Oct-2025 06:22:57 UTC] PHP Notice:  Undefined index: mark in /home/iclsoftw/public_html/sms/postadmission.php on line 95
+[02-Oct-2025 06:22:57 UTC] PHP Notice:  Undefined index: tagst in /home/iclsoftw/public_html/sms/postadmission.php on line 101
+[02-Oct-2025 06:22:57 UTC] PHP Notice:  Undefined index: tags1t in /home/iclsoftw/public_html/sms/postadmission.php on line 102
+[02-Oct-2025 07:14:05 UTC] PHP Warning:  getimagesize(): Filename cannot be empty in /home/iclsoftw/public_html/sms/postadmission.php on line 12
+[02-Oct-2025 07:14:05 UTC] PHP Notice:  Undefined index: gender in /home/iclsoftw/public_html/sms/postadmission.php on line 65
+[02-Oct-2025 07:14:05 UTC] PHP Notice:  Undefined index: occ in /home/iclsoftw/public_html/sms/postadmission.php on line 86
+[02-Oct-2025 07:14:05 UTC] PHP Notice:  Undefined index: income in /home/iclsoftw/public_html/sms/postadmission.php on line 87
+[02-Oct-2025 07:14:05 UTC] PHP Notice:  Undefined index: mark in /home/iclsoftw/public_html/sms/postadmission.php on line 95
+[02-Oct-2025 07:14:05 UTC] PHP Notice:  Undefined index: tagst in /home/iclsoftw/public_html/sms/postadmission.php on line 101
+[02-Oct-2025 07:14:05 UTC] PHP Notice:  Undefined index: tags1t in /home/iclsoftw/public_html/sms/postadmission.php on line 102
