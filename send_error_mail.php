@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $to = "jega@iclsoftwares.in";
+    $to = "admin@iclsoftwares.in";
     $subject = "Error Report [$code]";
     $body = "
         <h2>Error Report</h2>
