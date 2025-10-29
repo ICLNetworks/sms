@@ -1,5 +1,9 @@
 <?php
-// Get error message dynamically (from query or session)
+session_start();
+
+// get dynamic error details (from session or URL)
+$code = $_SESSION['error_code'] ?? ($_GET['code'] ?? '404');
+$msg  = $_SESSION['error_msg'] ?? ($_GET['msg'] ?? 'Page Not Found');
 $error_message = $_GET['error'] ?? "Unexpected error occurred.";
 ?>
 
@@ -115,11 +119,11 @@ $error_message = $_GET['error'] ?? "Unexpected error occurred.";
     }
 
     .success {
-      color: green;
+      color: #4caf50;
     }
 
     .error {
-      color: red;
+      color: #f44336;
     }
 
     @media (max-width: 768px) {
@@ -134,11 +138,10 @@ $error_message = $_GET['error'] ?? "Unexpected error occurred.";
   </style>
 </head>
 <body>
-   <?php include("header.php")?>
   <div class="container">
     <div class="blue-box">
       <div class="blue-box-header">
-        ❌ Error Page
+        ⚠️ Error <?php echo htmlspecialchars($code); ?> — <?php echo htmlspecialchars($msg); ?>
         <span id="msgStatus" class="msg-inline"></span>
       </div>
 
@@ -156,14 +159,16 @@ $error_message = $_GET['error'] ?? "Unexpected error occurred.";
         </div>
 
         <div class="gif-area">
-          <img src="https://i.gifer.com/1FA.gif" alt="Error mail sending animation" />
+          <img src="https://i.gifer.com/UFrK.gif" alt="Error mail sending animation" />
         </div>
       </div>
     </div>
-  </div><?php include("footer.php"); ?>
+  </div>
+
   <script>
     const form = document.getElementById('supportForm');
     const msg = document.getElementById('msgStatus');
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       msg.textContent = "Sending...";
