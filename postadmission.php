@@ -186,11 +186,6 @@ if (isset($_POST['submit'])) {
     
         // ✅ If all queries succeed, commit the transaction
         mysqli_commit($conn);
-        echo "<script>
-            alert('Student Registered Successfully!');
-            window.location.href='home.php';
-        </script>";
-        exit();
     
     } catch (Exception $e) {
         // ❌ Rollback on error
