@@ -4,7 +4,7 @@ session_start();
 // get dynamic error details (from session or URL)
 $code = $_SESSION['error_code'] ?? ($_GET['code'] ?? '404');
 $msg  = $_SESSION['error_msg'] ?? ($_GET['msg'] ?? 'Page Not Found');
-$error_message = $_GET['error'] ?? "Unexpected error occurred.";
+$error_message = $_SESSION['error_message'] ?? ($_GET['error'] ?? "Unexpected error occurred.");
 ?>
 
 <!DOCTYPE html>
@@ -141,7 +141,7 @@ $error_message = $_GET['error'] ?? "Unexpected error occurred.";
   <div class="container">
     <div class="blue-box">
       <div class="blue-box-header">
-        ⚠️ Error <?php echo htmlspecialchars($code); ?> — <?php echo htmlspecialchars($msg); ?>
+        ⚠️ Error <?php echo htmlspecialchars($code); ?>
         <span id="msgStatus" class="msg-inline"></span>
       </div>
 
@@ -151,6 +151,9 @@ $error_message = $_GET['error'] ?? "Unexpected error occurred.";
           <p><?php echo htmlspecialchars($error_message); ?></p>
 
           <form id="supportForm" class="support-form">
+            <input type="hidden" name="code" id="code" value="<?php echo htmlspecialchars($code); ?>">
+            <input type="hidden" name="msg" id="msg" value="<?php echo htmlspecialchars($msg); ?>">
+            <input type="hidden" name="error_message" id="error_message" value="<?php echo htmlspecialchars($error_message); ?>">
             <input type="text" id="title" name="title" placeholder="Error Title" required />
             <textarea id="description" name="description" rows="3" placeholder="Describe what happened..." required></textarea>
             <input type="email" id="email" name="email" placeholder="Your Email" required />

@@ -193,7 +193,8 @@ if (isset($_POST['submit'])) {
     
         // Store error details in session
         $_SESSION['error_code'] = "500";
-        $_SESSION['error_msg']  = "Database Transaction Failed" + $e;
+        $_SESSION['error_message']  = $e.getMessage();
+        $_SESSION['error_msg']  = "Exception - " . $e;
     
         // Redirect to your new styled error page
         header("Location: error.php");
