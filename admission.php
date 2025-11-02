@@ -553,16 +553,16 @@ return false;
                                                                     <option value="">Select</option>
                                                                     <option value="LKG">LKG</option>
                                                                     <option value="UKG">UKG</option>
-                                                                    <option value="I">I Std</option>
-                                                                    <option value="II">II Std</option>
-                                                                    <option value="III">III Std</option>
-                                                                    <option value="IV">IV Std</option>
-                                                                    <option value="V">V Std</option>
-                                                                    <option value="VI">VI Std</option>
-                                                                    <option value="VII">VII Std</option>
-                                                                    <option value="VIII">VIII Std</option>
-                                                                    <option value="IX">IX Std</option>
-                                                                    <option value="X">X Std</option>
+                                                                    <option value="I Std">I Std</option>
+                                                                    <option value="II Std">II Std</option>
+                                                                    <option value="III Std">III Std</option>
+                                                                    <option value="IV Std">IV Std</option>
+                                                                    <option value="V Std">V Std</option>
+                                                                    <option value="VI Std">VI Std</option>
+                                                                    <option value="VII Std">VII Std</option>
+                                                                    <option value="VIII Std">VIII Std</option>
+                                                                    <option value="IX Std">IX Std</option>
+                                                                    <option value="X Std">X Std</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -717,7 +717,7 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-12">
                                                                 <input type="text" class=" form-control" name="national"
-                                                                    value="Indian" id="national" required>
+                                                                    value="Indian Std" id="national" required>
                                                             </div>
                                                         </div>
                                                     </td>
