@@ -717,7 +717,7 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-12">
                                                                 <input type="text" class=" form-control" name="national"
-                                                                    value="Indian Std" id="national" required>
+                                                                    value="Indian" id="national" required>
                                                             </div>
                                                         </div>
                                                     </td>
