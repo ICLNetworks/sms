@@ -159,38 +159,30 @@ if (isset($_POST['submit'])) {
         // $totalfee, $pndscl, $vanfee, $pndvan, $target_file, $status etc.
     
         // 1️⃣ Register Table
-       echo "<script>alert('Register table start');</script>";
         $query1 = "insert into register(adno,ayear,emisno,std,doa,name,name1,fname,fname1,mname,mname1,gender,dob,comm,subc,pschool,national,religion,dist,van,bg,occ,income,address,mobileno,tags,photo,status) values('$adno','$ayear','$emisno','$std','$doa','$name','$name1','$fname','$fname1','$mname','$mname1','$gender','$dob','$comm','$subc','$pschool','$national','$religion','$dist','$van','$bg','$occ','$income','$address','$mobileno','$tags','$target_file','$status')";
         if (!mysqli_query($conn, $query1)) {
             throw new Exception("Failed to insert into register table: " . mysqli_error($conn));
         }
-        echo "<script>alert('Register table end');</script>";
     
         // 2️⃣ stu_basic_info Table
-        echo "<script>alert('stu_basic_info table start');</script>";
         $query2 = "insert into stu_basic_info(admission_id, student_name, father_name,mother_name,emis_number,standard,full_school_fee,pending_school_fee,full_van_fee,pending_van_fee,last_year_pending_scl,last_year_pending_van,photo) values('$adno','$name','$fname','$mname', '$emisno','$std','$totalfee','$totalfee','$vanfee' ,'$vanfee' ,'$pndscl', '$pndvan', '$target_file')";
         if (!mysqli_query($conn, $query2)) {
             throw new Exception("Failed to insert into stu_basic_info table: " . mysqli_error($conn));
         }
-        echo "<script>alert('stu_basic_info table end');</script>";
     
         // 3️⃣ student_fees — Study
-        echo "<script>alert('student_fees table start');</script>";
         $totalfee = (int)$totalfee + (int)$pndscl;
         $query3 = $query3 = "INSERT INTO student_fees(admission_id, fee_type, pending_amount, paid_date) VALUES ('$adno','Study','$totalfee','$doa')";
         if (!mysqli_query($conn, $query3)) {
             throw new Exception("Failed to insert Study fees: " . mysqli_error($conn));
         }
-        echo "<script>alert('student_fees table end');</script>";
     
         // 4️⃣ student_fees — Van
-        echo "<script>alert('student_fees van table start');</script>";
         $vanfee = (int)$vanfee + (int)$pndvan;
         $query4 = "insert into student_fees(admission_id, fee_type, pending_amount, paid_date) values('$adno','Van', '$vanfee', '$doa')";
         if (!mysqli_query($conn, $query4)) {
             throw new Exception("Failed to insert Van fees: " . mysqli_error($conn));
         }
-        echo "<script>alert('student_fees van table end');</script>";
     
         // ✅ If all queries succeed, commit the transaction
         mysqli_commit($conn);
@@ -208,7 +200,6 @@ if (isset($_POST['submit'])) {
         header("Location: error.php");
         exit();
     }
-    echo "<script>alert('query end');</script>";
     
 }
 ?>
