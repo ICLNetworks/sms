@@ -196,7 +196,6 @@ if (isset($_POST['submit'])) {
         mysqli_commit($conn);
     
     } catch (Exception $e) {
-        echo "<script>alert($e);</script>";
         // ❌ Rollback on error
         mysqli_rollback($conn);
     
