@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Image Compressor</title>
+
+<!-- JSZip CDN -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+<style>
+  :root{
+    --blue:#2f80d0;
+    --accent:#2563eb;
+    --muted:#6b7280;
+    --danger:#ef4444;
+    --card:#ffffff;
+  }
+
+  body{
+    margin:0;
+    font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+    background:#f3f4f6;
+    color:#0f172a;
+    padding:20px;
+  }
+
+  .container{
+    max-width:1100px;
+    margin:0 auto;
+    background:var(--card);
+    border-radius:8px;
+    border:1px solid #e6e9ef;
+    box-shadow:0 8px 30px rgba(2,6,23,0.06);
+    overflow:hidden;
+  }
+
+  /* Blue-box header */
+  .blue-box-header{
+    background-color:var(--blue);
+    color:#fff;
+    padding:12px 18px;
+    font-weight:700;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .blue-box-body{
+    padding:18px;
+    background:#fff;
+  }
+
+  header .subtitle{ color:#eaf2ff; font-weight:500; }
+
+  /* error bar */
+  #errorBar{
+    display:none;
+    background:var(--danger);
+    color:white;
+    padding:10px 12px;
+    border-radius:6px;
+    margin-bottom:12px;
+    position:relative;
+  }
+  #errorBar .closeBtn{
+    position:absolute;
+    right:8px;
+    top:6px;
+    cursor:pointer;
+    font-weight:700;
+  }
+
+  /* controls */
+  .controls{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+  .controls label{ font-size:13px; color:var(--muted); margin-right:6px; }
+  .controls input[type="number"]{ width:110px; padding:8px; border-radius:8px; border:1px solid #e6e9ef; }
+  .controls input[type="range"]{ width:160px; }
+
+  /* drop zone */
+  #dropZone{
+    border:2px dashed #c7d2fe;
+    border-radius:8px;
+    padding:28px;
+    text-align:center;
+    cursor:pointer;
+    color:var(--accent);
+    background:linear-gradient(180deg, rgba(99,102,241,0.03), transparent);
+  }
+  #dropZone.dragover{ background:#eef2ff; border-color:#7c3aed; }
+
+  /* action area (Layout C) */
+  .actions-after-drop{ margin-top:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+  button.btn{
+    background:var(--accent); color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:600;
+  }
+  button.btn.secondary{ background:#eef2ff; color:#1e293b; border:1px solid #e0e7ff; }
+  button.btn.ghost{ background:transparent; color:var(--accent); border:1px solid #e6eefc; }
+
+  /* gallery */
+  .gallery{ margin-top:16px; display:grid; gap:14px; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); padding-bottom:20px; }
+  .card{ background:var(--card); border-radius:10px; border:1px solid #eef2ff; padding:12px; display:flex; flex-direction:column; gap:8px; min-height:230px; }
+  .thumb{ height:120px; border-radius:8px; overflow:hidden; background:#f8fafc; display:flex; align-items:center; justify-content:center; }
+  .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  .meta{ display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .meta .name{ font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:65%; }
+  .meta .size{ font-size:13px; color:var(--muted); }
+
+  .stats{ font-size:13px; color:var(--muted); }
+  .progress{ height:8px; background:#eef2ff; border-radius:8px; overflow:hidden; margin-top:6px; }
+  .progress > i{ display:block; height:100%; width:0%; background:var(--accent); transition:width .22s linear; }
+
+  .card-actions{ display:flex; gap:8px; margin-top:auto; flex-wrap:wrap; }
+
+  .muted{ color:var(--muted); font-size:13px; }
+
+  /* modal */
+  .modal-bg{ display:none; position:fixed; inset:0; background:rgba(2,6,23,0.6); align-items:center; justify-content:center; z-index:9999; padding:20px; }
+  .modal{ width:100%; max-width:920px; background:#fff; border-radius:10px; padding:14px; max-height:90vh; overflow:auto; }
+
+  .compare-pair{ margin-bottom:18px; }
+  .compare-pair h4{ margin:6px 0 8px 0; font-size:14px; color:#0f172a; }
+  .compare-img{ width:100%; max-height:360px; object-fit:contain; border-radius:8px; border:1px solid #e6eefc; background:#fafafa; display:block; }
+
+  .modal-footer{ display:flex; justify-content:space-between; align-items:center; margin-top:8px; flex-wrap:wrap; gap:8px; }
+
+  .carousel-controls{ display:flex; gap:8px; align-items:center; }
+
+  @media (max-width:640px){
+    .gallery{ grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); }
+    .thumb{ height:100px; }
+    .compare-img{ max-height:260px; }
+    .controls input[type="number"]{ width:90px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="blue-box-header">
+    <div>Advanced Image Compressor</div>
+    <div style="font-size:14px; color:rgba(255,255,255,0.95)">Upload ▸ Compress ▸ Download</div>
+  </div>
+
+  <div class="blue-box-body">
+
+    <!-- ERROR BAR -->
+    <div id="errorBar"><span id="errorText"></span><span class="closeBtn" onclick="hideError()">✕</span></div>
+
+    <!-- controls -->
+    <div class="controls">
+      <label>Width</label>
+      <input id="width" type="number" value="800" />
+      <label>Height</label>
+      <input id="height" type="number" value="800" />
+      <label>Quality</label>
+      <input id="quality" type="range" min="0.1" max="1" step="0.05" value="0.8" />
+      <div class="muted" id="qualityVal">0.80</div>
+    </div>
+
+    <!-- drop zone -->
+    <div id="dropZone"> 
+      <div id="dropInner" style="padding:12px;">
+        <strong style="color:var(--accent)">Drag & drop images here</strong><br>or click to select files
+        <input id="fileInput" type="file" accept="image/*" multiple style="display:none" />
+      </div>
+    </div>
+
+    <!-- Layout C: Compress All under drop zone -->
+    <div class="actions-after-drop">
+      <button id="compressAllBtn" class="btn" style="display:none">Compress All</button>
+      <!-- Download + Compare will appear after compression (below) -->
+      <button id="downloadZipBtn" class="btn secondary" style="display:none">Download ZIP</button>
+      <button id="compareAllBtn" class="btn ghost" style="display:none">Compare All</button>
+    </div>
+
+    <!-- gallery -->
+    <div id="gallery" class="gallery"></div>
+
+  </div>
+</div>
+
+<!-- Single compare modal (vertical) -->
+<div id="singleModal" class="modal-bg">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h3 id="singleTitle">Compare</h3>
+
+    <div class="compare-pair">
+      <h4 id="sbeforeLabel">Before —</h4>
+      <img id="sbeforeImg" class="compare-img" src="" alt="Before">
+    </div>
+
+    <div class="compare-pair">
+      <h4 id="safterLabel">After —</h4>
+      <img id="safterImg" class="compare-img" src="" alt="After">
+    </div>
+
+    <div class="modal-footer">
+      <div class="muted" id="singleMeta"></div>
+      <div>
+        <button class="btn secondary" onclick="closeSingle()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Compare All modal (carousel vertical pairs) -->
+<div id="allModal" class="modal-bg">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <div class="muted" id="allIndex">0 / 0</div>
+      <div class="carousel-controls">
+        <button id="prevBtn" class="btn secondary small">Prev</button>
+        <button id="nextBtn" class="btn small">Next</button>
+        <button id="closeAllBtn" class="btn secondary small">Close</button>
+      </div>
+    </div>
+
+    <div id="allContent" style="margin-top:12px;"></div>
+
+    <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+      <div class="muted" id="allMeta"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   State
+   ========================= */
+const items = []; // { file, name, preview, beforeBytes, compressed, afterBytes, progress }
+const jsZip = new JSZip();
+
+const fileInput = document.getElementById('fileInput');
+const dropZone = document.getElementById('dropZone');
+const gallery = document.getElementById('gallery');
+
+const widthEl = document.getElementById('width');
+const heightEl = document.getElementById('height');
+const qualityEl = document.getElementById('quality');
+const qualityVal = document.getElementById('qualityVal');
+
+const compressAllBtn = document.getElementById('compressAllBtn');
+const downloadZipBtn = document.getElementById('downloadZipBtn');
+const compareAllBtn = document.getElementById('compareAllBtn');
+
+const errorBar = document.getElementById('errorBar');
+const errorText = document.getElementById('errorText');
+
+const singleModal = document.getElementById('singleModal');
+const sbeforeImg = document.getElementById('sbeforeImg');
+const safterImg = document.getElementById('safterImg');
+const sbeforeLabel = document.getElementById('sbeforeLabel');
+const safterLabel = document.getElementById('safterLabel');
+const singleMeta = document.getElementById('singleMeta');
+
+const allModal = document.getElementById('allModal');
+const allContent = document.getElementById('allContent');
+const allIndex = document.getElementById('allIndex');
+const allMeta = document.getElementById('allMeta');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const closeAllBtn = document.getElementById('closeAllBtn');
+
+let compressedCount = 0;
+let compareList = [];
+let comparePos = 0;
+
+/* =========================
+   Helpers
+   ========================= */
+function formatBytes(b){
+  if (b==null) return '—';
+  if (b < 1024) return b + ' B';
+  if (b < 1024*1024) return (b/1024).toFixed(2) + ' KB';
+  return (b/1024/1024).toFixed(2) + ' MB';
+}
+
+function showError(msg){
+  errorText.textContent = msg;
+  errorBar.style.display = 'block';
+  // auto-hide after 4s
+  setTimeout(()=>{ errorBar.style.display = 'none'; }, 4000);
+}
+function hideError(){ errorBar.style.display = 'none'; }
+
+/* quality label */
+qualityVal.textContent = Number(qualityEl.value).toFixed(2);
+qualityEl.addEventListener('input', ()=> qualityVal.textContent = Number(qualityEl.value).toFixed(2));
+
+/* =========================
+   Drop / File select
+   ========================= */
+dropZone.addEventListener('click', ()=> fileInput.click());
+dropZone.addEventListener('dragover', (e)=> { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', (e)=> { e.preventDefault(); dropZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+
+fileInput.addEventListener('change', (e)=> handleFiles(e.target.files));
+
+function handleFiles(files){
+  const arr = Array.from(files || []);
+  if (!arr.length) return;
+  arr.forEach(file => {
+    if (!file.type.startsWith('image/')) { showError('Only image files allowed'); return; }
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      items.push({
+        file,
+        name: file.name.replace(/\.[^.]+$/,''),
+        preview: ev.target.result,
+        beforeBytes: file.size,
+        compressed: null,
+        afterBytes: null,
+        progress: 0
+      });
+      renderGallery();
+      compressAllBtn.style.display = 'inline-block';
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* =========================
+   Render gallery UI
+   ========================= */
+function renderGallery(){
+  gallery.innerHTML = '';
+  items.forEach((it, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="thumb"><img src="${it.preview}" alt="${it.name}"></div>
+      <div class="meta">
+        <div class="name" title="${it.name}">${it.name}</div>
+        <div class="size">${formatBytes(it.beforeBytes)}</div>
+      </div>
+      <div class="stats">
+        <div id="after-${idx}">After: ${ it.afterBytes ? formatBytes(it.afterBytes) : '—' }</div>
+        <div id="saved-${idx}">${ it.afterBytes ? ('Saved: ' + Math.round((1 - it.afterBytes/it.beforeBytes)*100) + '%') : '' }</div>
+        <div class="progress"><i id="bar-${idx}" style="width:${it.progress}%"></i></div>
+      </div>
+      <div class="card-actions">
+        <button class="small btn" onclick="compressOne(${idx})">Compress</button>
+        <button class="small btn secondary" onclick="downloadOne(${idx})">Download</button>
+        <button class="small btn ghost" onclick="openSingle(${idx})">Compare</button>
+      </div>
+    `;
+    gallery.appendChild(card);
+  });
+
+  // update compressed count
+  compressedCount = items.filter(x=>x.compressed).length;
+  downloadZipBtn.style.display = compressedCount > 0 ? 'inline-block' : 'none';
+  compareAllBtn.style.display = compressedCount > 0 ? 'inline-block' : 'none';
+}
+
+/* =========================
+   Compression core
+   ========================= */
+function dataUrlToBytes(dataUrl){
+  // rough estimate of bytes
+  const base64 = dataUrl.split(',')[1] || '';
+  return Math.round(base64.length * 3 / 4);
+}
+
+function compressCanvasFromDataURL(dataUrl, q, w, h){
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0,0,w,h);
+      ctx.drawImage(img, 0, 0, w, h);
+      try {
+        const out = canvas.toDataURL('image/jpeg', q);
+        resolve(out);
+      } catch(e){
+        reject(e);
+      }
+    };
+    img.onerror = (e) => reject(e);
+    img.src = dataUrl;
+  });
+}
+
+async function compressOne(idx){
+  const it = items[idx];
+  if (!it) { showError('Item not found'); return; }
+  if (it.compressed) { /* already compressed - still allow recompress */ }
+
+  try {
+    it.progress = 6; updateBar(idx);
+
+    const q = Number(qualityEl.value) || 0.8;
+    const w = Number(widthEl.value) || 800;
+    const h = Number(heightEl.value) || 800;
+
+    const out = await compressCanvasFromDataURL(it.preview, q, w, h);
+
+    it.compressed = out;
+    it.afterBytes = dataUrlToBytes(out);
+    it.progress = 100; updateBar(idx);
+
+    // add to JSZip (store base64)
+    const base64 = out.split(',')[1];
+    jsZip.file(it.name + '_compressed.jpg', base64, { base64: true });
+
+    renderGallery();
+  } catch(e){
+    console.error(e);
+    showError('Compression failed for: ' + it.name);
+  }
+}
+
+function updateBar(idx){
+  const el = document.getElementById('bar-' + idx);
+  if (el) el.style.width = (items[idx].progress || 0) + '%';
+}
+
+/* =========================
+   Compress All (sequential)
+   ========================= */
+async function compressAll(){
+  if (!items.length) { showError('No images to compress'); return; }
+  // compress sequentially
+  for (let i=0;i<items.length;i++){
+    if (!items[i].compressed){
+      await compressOne(i);
+    }
+  }
+  // ensure action buttons appear (Download/Compare)
+  renderGallery();
+}
+
+/* =========================
+   Download single
+   ========================= */
+function downloadOne(idx){
+  const it = items[idx];
+  if (!it || !it.compressed) { showError('Please compress image first'); return; }
+  const a = document.createElement('a');
+  a.href = it.compressed;
+  a.download = it.name + '_compressed.jpg';
+  a.click();
+}
+
+/* =========================
+   Single Compare modal
+   ========================= */
+function openSingle(idx){
+  const it = items[idx];
+  if (!it || !it.compressed) { showError('Please compress image first'); return; }
+  sbeforeImg.src = it.preview;
+  safterImg.src = it.compressed;
+  sbeforeLabel.textContent = 'Before — ' + formatBytes(it.beforeBytes);
+  safterLabel.textContent = 'After — ' + formatBytes(it.afterBytes);
+  singleMeta.textContent = `${it.name} • Saved ${Math.round((1 - it.afterBytes/it.beforeBytes)*100)}%`;
+  singleModal.style.display = 'flex';
+}
+function closeSingle(){ singleModal.style.display = 'none'; }
+
+/* =========================
+   Compare All carousel (vertical)
+   ========================= */
+function openAll(){
+  compareList = items.map((it,idx)=> it.compressed ? idx : -1).filter(i=>i>=0);
+  if (!compareList.length){ showError('No compressed images to compare'); return; }
+  comparePos = 0;
+  renderAllSlide();
+  allModal.style.display = 'flex';
+}
+
+function renderAllSlide(){
+  const idx = compareList[comparePos];
+  const it = items[idx];
+  allContent.innerHTML = '';
+  const beforeBlock = document.createElement('div');
+  beforeBlock.className = 'compare-pair';
+  beforeBlock.innerHTML = `<h4>Before — ${formatBytes(it.beforeBytes)}</h4><img class="compare-img" src="${it.preview}" />`;
+  const afterBlock = document.createElement('div');
+  afterBlock.className = 'compare-pair';
+  afterBlock.innerHTML = `<h4>After — ${formatBytes(it.afterBytes)}</h4><img class="compare-img" src="${it.compressed}" />`;
+  allContent.appendChild(beforeBlock);
+  allContent.appendChild(afterBlock);
+  allIndex.textContent = (comparePos + 1) + ' / ' + compareList.length;
+  allMeta.textContent = `${it.name} • Saved ${Math.round((1 - it.afterBytes/it.beforeBytes)*100)}%`;
+}
+
+prevBtn.addEventListener('click', ()=>{
+  if (comparePos > 0){ comparePos--; renderAllSlide(); }
+});
+nextBtn.addEventListener('click', ()=>{
+  if (comparePos < compareList.length - 1){ comparePos++; renderAllSlide(); }
+});
+closeAllBtn.addEventListener('click', ()=> allModal.style.display = 'none');
+
+/* =========================
+   Download ZIP (all compressed)
+   ========================= */
+async function downloadZIP(){
+  const compressed = items.filter(it=>it.compressed);
+  if (!compressed.length){ showError('No compressed images to ZIP'); return; }
+
+  try {
+    const z = new JSZip();
+    for (const it of compressed){
+      const blob = await (await fetch(it.compressed)).blob();
+      z.file(it.name + '_compressed.jpg', blob);
+    }
+    const out = await z.generateAsync({ type: 'blob' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(out);
+    a.download = 'compressed_images.zip';
+    a.click();
+  } catch(e){
+    console.error(e);
+    showError('Failed to generate ZIP');
+  }
+}
+
+/* =========================
+   Wire events
+   ========================= */
+compressAllBtn.addEventListener('click', async ()=>{
+  await compressAll();
+});
+downloadZipBtn.addEventListener('click', downloadZIP);
+compareAllBtn.addEventListener('click', openAll);
+
+/* Expose UI logic: show compress button when files present */
+const uiTick = setInterval(()=>{
+  compressAllBtn.style.display = items.length ? 'inline-block' : 'none';
+}, 500);
+
+/* Show Download/Compare when compressed exist (hook using renderGallery) */
+(function monitorCompressed(){
+  const obs = new MutationObserver(()=>{ /* no-op - we call renderGallery manually when needed */ });
+  obs.observe(gallery, { childList: true, subtree:true });
+})();
+
+/* close modals when clicking backdrop */
+window.addEventListener('click', (e)=>{
+  if (e.target === singleModal) singleModal.style.display = 'none';
+  if (e.target === allModal) allModal.style.display = 'none';
+});
+
+</script>
+
+</body>
+</html>
