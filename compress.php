@@ -137,7 +137,7 @@
 </style>
 </head>
 <body>
-
+<?php include("header.php")?>
 <div class="container">
 
   <div class="blue-box-header">
@@ -551,6 +551,6 @@ window.addEventListener('click', (e)=>{
 });
 
 </script>
-
+<?php include("footer.php"); ?>
 </body>
 </html>
