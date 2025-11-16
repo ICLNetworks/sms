@@ -50,6 +50,21 @@
     padding:18px;
     background:#fff;
   }
+  .btn-home,
+  .btn-logout {
+      border: 1px solid red;
+      background: white;
+      color: red;
+      font-size: 14px;
+      padding: 2px 10px;
+      text-decoration: none;
+      margin-left: 5px;
+  }
+  .btn-home:hover,
+  .btn-logout:hover {
+      background: red;
+      color: white;
+  }
 
   header .subtitle{ color:#eaf2ff; font-weight:500; }
 
@@ -142,7 +157,10 @@
 
   <div class="blue-box-header">
     <div>Advanced Image Compressor</div>
-    <div style="font-size:14px; color:rgba(255,255,255,0.95)">Upload ▸ Compress ▸ Download</div>
+    <div>
+      <a href="home.php" class="btn-home">Home</a>
+      <a href="logout.php" class="btn-logout">Logout</a>
+    </div>
   </div>
 
   <div class="blue-box-body">
