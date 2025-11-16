@@ -551,6 +551,5 @@ window.addEventListener('click', (e)=>{
 });
 
 </script>
-<?php include("footer.php"); ?>
 </body>
 </html>
