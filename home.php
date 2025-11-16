@@ -120,7 +120,7 @@ if (isset($_SESSION['login_user'])) {
 
 						<div class="col-lg-4 col-md-6 col-sm-12">
 							<div class="inner">
-								<i class="fa fa-key fa-4x"></i>
+								<i class="fa fa-file-image-o fa-4x"></i>
 								<a href="compress.php">Compress Images</a>
 							</div>
 						</div>
