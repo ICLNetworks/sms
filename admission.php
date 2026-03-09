@@ -82,7 +82,21 @@ if (($viewMode || $editMode) && $editId !== null) {
         $formData['income'] = $row['income'];
         $formData['address'] = $row['address'];
         $formData['mob'] = $row['mobileno'];
-        $formData['tags'] = $row['tags'];
+
+        // Parse stored tags into two separate inputs (stored as "1. ... & 2. ...")
+        $storedTags = trim($row['tags']);
+        $formData['tags'] = '';
+        $formData['tags1'] = '';
+        if ($storedTags !== '') {
+            $parts = preg_split('/\s*&\s*/', $storedTags);
+            if (count($parts) >= 1) {
+                $formData['tags'] = preg_replace('/^\s*1\.\s*/', '', $parts[0]);
+            }
+            if (count($parts) >= 2) {
+                $formData['tags1'] = preg_replace('/^\s*2\.\s*/', '', $parts[1]);
+            }
+        }
+
         $formData['photo'] = $row['photo'];
     }
 }
