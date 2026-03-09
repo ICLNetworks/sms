@@ -124,9 +124,8 @@ include("includes/db.conn.php");
 											  echo "<td>".$row['dob']."</td>";
 											  echo "<td>".$row['comm']."/".$row['subc']."</td>";
 											  echo "<td class='fileupload-new thumbnail' style='height:75px!important; width:75px!important;' ><img src='".$row['photo']."'></td>";
-								  echo "<td><a class='btn btn-primary btn-sm' href='admission.php?id=".$id."'>Edit</a>";
-                                  echo "<a class='btn btn-info btn-sm' href='admission.php?view=".$id."'>View Full Details</a></td>";
-								  echo "</tr>";
+			                                  echo "<td><a class='btn btn-primary btn-sm' href='admission.php?id=".$id."' title='Edit'><i class='fa fa-pencil'></i></a> ";
+                                              echo "<a class='btn btn-info btn-sm' href='admission.php?view=".$id."' title='View'><i class='fa fa-eye'></i></a></td>";
 							 $sno++;
 							 }
 							  ?>
