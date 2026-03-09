@@ -1175,9 +1175,7 @@ return false;
                                         <center>
                                             <?php if ($viewMode): ?>
                                                 <a class="btn btn-primary btn-lg" href="admission.php?id=<?php echo $editId; ?>">Edit</a>
-                                                <button type="button" class="btn btn-warning btn-lg btn-grad" onclick="confirmCancel()">
-                                                    Back
-                                                </button>
+                                                <a href="adminview.php" class="btn btn-info btn-lg btn-grad">Back</a>
                                             <?php elseif ($editMode): ?>
                                                 <input type="submit" value="Update" name="update" class="btn btn-primary btn-lg" />
                                                 <button type="button" class="btn btn-warning btn-lg btn-grad" onclick="confirmCancel()">
