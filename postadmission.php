@@ -45,14 +45,14 @@ if (isset($_POST['update'])) {
     $address = $_POST['address'];
     $mobileno = $_POST['mob'];
 
-    $mark = $_POST['mark'];
-    if ($mark == "eng") {
+    // $mark = $_POST['mark'];
+    // if ($mark == "eng") {
         $tags11 = $_POST['tags'];
         $tags1 = $_POST['tags1'];
-    } else {
-        $tags11 = $_POST['tagst'];
-        $tags1 = $_POST['tags1t'];
-    }
+    // } else {
+    //     $tags11 = $_POST['tagst'];
+    //     $tags1 = $_POST['tags1t'];
+    // }
 
     $tags = "1. " . $tags11 . "& 2." . $tags1;
 
