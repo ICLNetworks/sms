@@ -102,6 +102,7 @@ include("includes/db.conn.php");
                                             <th>Date of Birth</th>
 											<th>Community/Sub Caste</th>
 											<th>Photo</th>
+                                            <th>Operation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -123,25 +124,24 @@ include("includes/db.conn.php");
 											  echo "<td>".$row['dob']."</td>";
 											  echo "<td>".$row['comm']."/".$row['subc']."</td>";
 											  echo "<td class='fileupload-new thumbnail' style='height:75px!important; width:75px!important;' ><img src='".$row['photo']."'></td>";
-											  echo "</tr>";
-											 $sno++;
-											 }
-											  ?>
-											  
-											  
-                                        
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                           
+								  echo "<td><a class='btn btn-primary btn-sm' href='admission.php?id=".$id."'>Edit</a></td>";
+								  echo "</tr>";
+							 $sno++;
+							 }
+							  ?>
+						  
+						  
+					    </tbody>
+					</table>
+				</div>
+			   
                         </div>
-                    </div>
-                </div>
-            </div>
-		
-        
-               
+			    </div>
+			</div>
+			</div>
+			
+			
+			   
       </div>
           <!--END PAGE CONTENT --> 
     </div>

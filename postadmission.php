@@ -2,6 +2,124 @@
 
 include("includes/db.conn.php");
 
+if (isset($_POST['update'])) {
+    $id = $_POST['id'];
+    $adno = $_POST['adno'];
+    $ayear = $_POST['ayear'];
+    $emisno = $_POST['emisno'];
+    $std = $_POST['std'];
+
+    $doa = $_POST['admission_date'];
+
+    $name = $_POST['name'];
+    $name1 = $_POST['name1'];
+    $fname = $_POST['fname'];
+    $fname1 = $_POST['fname1'];
+    $mname = $_POST['mname'];
+    $mname1 = $_POST['mname1'];
+
+    $gender = $_POST['gender'];
+
+    $dob = $_POST['dob'];
+
+    $comm = $_POST['comm'];
+    $subc = $_POST['subc'];
+
+    $pschool = $_POST['pschool'];
+    $national = $_POST['national'];
+    $religion1 = $_POST['religion'];
+    if ($religion1 == "Others") {
+        $religiontext = $_POST['religiontext'];
+        $religion = $religion1 . " &nbsp;&nbsp;&nbsp;&nbsp;" . $religiontext;
+    } else {
+        $religion = $religion1;
+    }
+
+    $pndscl = $_POST['pndscl'];
+    $pndvan = $_POST['pndvan'];
+    $van = $_POST['van'];
+    $bg = $_POST['bg'];
+    $occ = $_POST['occ'];
+    $income = $_POST['income'];
+
+    $address = $_POST['address'];
+    $mobileno = $_POST['mob'];
+
+    $mark = $_POST['mark'];
+    if ($mark == "eng") {
+        $tags11 = $_POST['tags'];
+        $tags1 = $_POST['tags1'];
+    } else {
+        $tags11 = $_POST['tagst'];
+        $tags1 = $_POST['tags1t'];
+    }
+
+    $tags = "1. " . $tags11 . "& 2." . $tags1;
+
+    $dist1 = $_POST['dist'];
+    if ($dist1 == "Others") {
+        $disttext = $_POST['disttext'];
+        $dist = $disttext;
+    } else {
+        $dist = $dist1;
+    }
+
+    $target_file = $_POST['existing_photo'] ?? '';
+    if (!empty($_FILES['fileToUpload']['name'])) {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+
+        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+        if ($check !== false) {
+            $uploadOk = 1;
+        } else {
+            $uploadOk = 0;
+        }
+
+        if (file_exists($target_file)) {
+            $uploadOk = 0;
+        }
+
+        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+            $uploadOk = 0;
+        }
+
+        if ($uploadOk == 1) {
+            move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+        }
+    }
+
+    $query = "UPDATE register SET adno='$adno', ayear='$ayear', emisno='$emisno', std='$std', doa='$doa', name='$name', name1='$name1', fname='$fname', fname1='$fname1', mname='$mname', mname1='$mname1', gender='$gender', dob='$dob', comm='$comm', subc='$subc', pschool='$pschool', national='$national', religion='$religion', dist='$dist', van='$van', bg='$bg', occ='$occ', income='$income', address='$address', mobileno='$mobileno', tags='$tags', photo='$target_file' WHERE id='$id'";
+    mysqli_query($conn, $query);
+
+    // Update dependent tables
+    $res = mysqli_query($conn, "SELECT * FROM sclfeedetails where standard='$std'");
+    $totalfee = 0;
+    while ($row = mysqli_fetch_array($res)) {
+        if ($subc === 'Sourashtra') {
+            $totalfee = $row['discount_fee'];
+        } else {
+            $totalfee = $row['total_fee'];
+        }
+    }
+
+    $vanfee = 0;
+    $res = mysqli_query($conn, "SELECT * FROM vanfeedetails where city='$van'");
+    while ($row = mysqli_fetch_array($res)) {
+        $vanfee = $row['amount'];
+    }
+
+    mysqli_query($conn, "UPDATE stu_basic_info SET student_name='$name', father_name='$fname', mother_name='$mname', emis_number='$emisno', standard='$std', full_school_fee='$totalfee', pending_school_fee='$totalfee', full_van_fee='$vanfee', pending_van_fee='$vanfee', last_year_pending_scl='$pndscl', last_year_pending_van='$pndvan', photo='$target_file' WHERE admission_id='$adno'");
+
+    mysqli_query($conn, "UPDATE student_fees SET pending_amount='$totalfee', paid_date='$doa' WHERE admission_id='$adno' AND fee_type='Study'");
+    mysqli_query($conn, "UPDATE student_fees SET pending_amount='$vanfee', paid_date='$doa' WHERE admission_id='$adno' AND fee_type='Van'");
+
+    header("Location: adminview.php");
+    exit();
+}
+
 if (isset($_POST['submit'])) {
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);

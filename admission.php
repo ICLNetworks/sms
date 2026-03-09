@@ -8,6 +8,77 @@ if (!isset($_SESSION['login_user'])) {
 
 include("includes/db.conn.php");
 
+$editMode = false;
+$editId = null;
+$formData = [
+    'adno' => '',
+    'ayear' => '',
+    'emisno' => '',
+    'std' => '',
+    'admission_date' => '',
+    'name' => '',
+    'name1' => '',
+    'fname' => '',
+    'fname1' => '',
+    'mname' => '',
+    'mname1' => '',
+    'gender' => '',
+    'dob' => '',
+    'national' => '',
+    'religion' => '',
+    'comm' => '',
+    'subc' => '',
+    'dist' => '',
+    'pschool' => '',
+    'van' => '',
+    'bg' => '',
+    'occ' => '',
+    'income' => '',
+    'address' => '',
+    'mob' => '',
+    'mark' => '',
+    'tags' => '',
+    'tags1' => '',
+    'photo' => '',
+];
+
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $editMode = true;
+    $editId = (int)$_GET['id'];
+
+    $res = mysqli_query($conn, "SELECT * FROM register WHERE id='$editId'");
+    if ($res && mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        $formData['adno'] = $row['adno'];
+        $formData['ayear'] = $row['ayear'];
+        $formData['emisno'] = $row['emisno'];
+        $formData['std'] = $row['std'];
+        $formData['admission_date'] = $row['doa'];
+        $formData['name'] = $row['name'];
+        $formData['name1'] = $row['name1'];
+        $formData['fname'] = $row['fname'];
+        $formData['fname1'] = $row['fname1'];
+        $formData['mname'] = $row['mname'];
+        $formData['mname1'] = $row['mname1'];
+        $formData['gender'] = $row['gender'];
+        $formData['dob'] = $row['dob'];
+        $formData['national'] = $row['national'];
+        $formData['religion'] = $row['religion'];
+        $formData['comm'] = $row['comm'];
+        $formData['subc'] = $row['subc'];
+        $formData['dist'] = $row['dist'];
+        $formData['pschool'] = $row['pschool'];
+        $formData['van'] = $row['van'];
+        $formData['bg'] = $row['bg'];
+        $formData['occ'] = $row['occ'];
+        $formData['income'] = $row['income'];
+        $formData['address'] = $row['address'];
+        $formData['mob'] = $row['mobileno'];
+        $formData['tags'] = $row['tags'];
+        $formData['photo'] = $row['photo'];
+    }
+}
+
 if (isset($_POST['submit'])) {
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -471,6 +542,11 @@ return false;
             <div id="counter-default" class="row">
                 <form id="block-validate" action="postadmission.php" enctype="multipart/form-data" name="form1"
                     method="post" onSubmit="return check();">
+                    <?php if ($editMode): ?>
+                        <input type="hidden" name="update" value="1">
+                        <input type="hidden" name="id" value="<?php echo $editId; ?>">
+                        <input type="hidden" name="existing_photo" value="<?php echo htmlspecialchars($formData['photo']); ?>">
+                    <?php endif; ?>
                     <div class="row">
 
                         <div class="col-lg-12">
@@ -499,7 +575,7 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-6">
                                                                 <input type="text" class="form-control" name="adno"
-                                                                    id="adno" required>
+                                                                    id="adno" required value="<?php echo htmlspecialchars($formData['adno']); ?>" <?php echo $editMode ? 'readonly' : ''; ?>>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -1070,7 +1146,13 @@ return false;
                                                                                 image</span><span
                                                                                 class="fileupload-exists">Change</span><input
                                                                                 type="file" name="fileToUpload"
-                                                                                id="fileToUpload" required /></span>
+                                                                                id="fileToUpload" <?php echo $editMode ? '' : 'required'; ?> /></span>
+                                                                        <?php if ($editMode && !empty($formData['photo'])): ?>
+                                                                            <div style="margin-top: 10px;">
+                                                                                <strong>Current photo:</strong><br>
+                                                                                <img src="<?php echo htmlspecialchars($formData['photo']); ?>" style="max-width: 150px; max-height: 150px;" />
+                                                                            </div>
+                                                                        <?php endif; ?>
                                                                         <a href="#"
                                                                             class="btn btn-danger fileupload-exists"
                                                                             data-dismiss="fileupload">Remove</a>
@@ -1083,9 +1165,12 @@ return false;
                                             </tbody>
                                         </table>
                                         <center>
-                                            <input type="submit" value="Submit" name="submit"
-                                                class="btn btn-primary btn-lg " />
-                                            <input type="reset" class="btn btn-success  btn-lg btn-grad">
+                                            <?php if ($editMode): ?>
+                                                <input type="submit" value="Update" name="update" class="btn btn-primary btn-lg" />
+                                            <?php else: ?>
+                                                <input type="submit" value="Submit" name="submit" class="btn btn-primary btn-lg" />
+                                                <input type="reset" class="btn btn-success btn-lg btn-grad" />
+                                            <?php endif; ?>
                                             <br><a href="home.php" class="btn btn-info btn-lg btn-grad">Back</a>
                                         </center>
                                     </div>
@@ -1094,6 +1179,23 @@ return false;
                         </div>
                     </div>
                 </form>
+                <?php if ($editMode): ?>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const admissionData = <?php echo json_encode($formData); ?>;
+                            for (const [key, value] of Object.entries(admissionData)) {
+                                const el = document.querySelector('[name="' + key + '"]');
+                                if (!el) continue;
+                                if (el.type === 'radio' || el.type === 'checkbox') {
+                                    const match = document.querySelector('[name="' + key + '"][value="' + value + '"]');
+                                    if (match) match.checked = true;
+                                } else {
+                                    el.value = value;
+                                }
+                            }
+                        });
+                    </script>
+                <?php endif; ?>
             </div>
         </div>
         <!--END PAGE CONTENT -->
