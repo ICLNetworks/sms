@@ -1167,11 +1167,14 @@ return false;
                                         <center>
                                             <?php if ($editMode): ?>
                                                 <input type="submit" value="Update" name="update" class="btn btn-primary btn-lg" />
+                                                <button type="button" class="btn btn-warning btn-lg btn-grad" onclick="confirmCancel()">
+                                                    Cancel
+                                                </button>
                                             <?php else: ?>
                                                 <input type="submit" value="Submit" name="submit" class="btn btn-primary btn-lg" />
                                                 <input type="reset" class="btn btn-success btn-lg btn-grad" />
+                                                <a href="home.php" class="btn btn-info btn-lg btn-grad">Back</a>
                                             <?php endif; ?>
-                                            <br><a href="home.php" class="btn btn-info btn-lg btn-grad">Back</a>
                                         </center>
                                     </div>
                                 </div>
@@ -1203,6 +1206,12 @@ return false;
     <!--END MAIN CONTAINER -->
 
     <script>
+        function confirmCancel() {
+            if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                window.location.href = 'adminview.php';
+            }
+        }
+
         function toggleOtherInput() {
             var subc = document.getElementById("subc").value;
             var otherInput = document.getElementById("subc_other");
