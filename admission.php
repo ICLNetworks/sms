@@ -8,6 +8,85 @@ if (!isset($_SESSION['login_user'])) {
 
 include("includes/db.conn.php");
 
+$viewMode = false;
+$editMode = false;
+$editId = null;
+$formData = [
+    'adno' => '',
+    'ayear' => '',
+    'emisno' => '',
+    'std' => '',
+    'admission_date' => '',
+    'name' => '',
+    'name1' => '',
+    'fname' => '',
+    'fname1' => '',
+    'mname' => '',
+    'mname1' => '',
+    'gender' => '',
+    'dob' => '',
+    'national' => '',
+    'religion' => '',
+    'comm' => '',
+    'subc' => '',
+    'dist' => '',
+    'pschool' => '',
+    'van' => '',
+    'bg' => '',
+    'occ' => '',
+    'income' => '',
+    'address' => '',
+    'mob' => '',
+    'mark' => '',
+    'tags' => '',
+    'tags1' => '',
+    'photo' => '',
+];
+
+if (isset($_GET['view']) && is_numeric($_GET['view'])) {
+    $viewMode = true;
+    $editId = (int)$_GET['view'];
+}
+
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $editMode = true;
+    $editId = (int)$_GET['id'];
+}
+
+if (($viewMode || $editMode) && $editId !== null) {
+    $res = mysqli_query($conn, "SELECT * FROM register WHERE id='$editId'");
+    if ($res && mysqli_num_rows($res) > 0) {
+        $row = mysqli_fetch_assoc($res);
+        $formData['adno'] = $row['adno'];
+        $formData['ayear'] = $row['ayear'];
+        $formData['emisno'] = $row['emisno'];
+        $formData['std'] = $row['std'];
+        $formData['admission_date'] = $row['doa'];
+        $formData['name'] = $row['name'];
+        $formData['name1'] = $row['name1'];
+        $formData['fname'] = $row['fname'];
+        $formData['fname1'] = $row['fname1'];
+        $formData['mname'] = $row['mname'];
+        $formData['mname1'] = $row['mname1'];
+        $formData['gender'] = $row['gender'];
+        $formData['dob'] = $row['dob'];
+        $formData['national'] = $row['national'];
+        $formData['religion'] = $row['religion'];
+        $formData['comm'] = $row['comm'];
+        $formData['subc'] = $row['subc'];
+        $formData['dist'] = $row['dist'];
+        $formData['pschool'] = $row['pschool'];
+        $formData['van'] = $row['van'];
+        $formData['bg'] = $row['bg'];
+        $formData['occ'] = $row['occ'];
+        $formData['income'] = $row['income'];
+        $formData['address'] = $row['address'];
+        $formData['mob'] = $row['mobileno'];
+        $formData['tags'] = $row['tags'];
+        $formData['photo'] = $row['photo'];
+    }
+}
+
 if (isset($_POST['submit'])) {
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -470,7 +549,12 @@ return false;
 
             <div id="counter-default" class="row">
                 <form id="block-validate" action="postadmission.php" enctype="multipart/form-data" name="form1"
-                    method="post" onSubmit="return check();">
+                    method="post" onSubmit="return <?php echo $viewMode ? 'false' : 'check()'; ?>;">
+                    <?php if ($editMode): ?>
+                        <input type="hidden" name="update" value="1">
+                        <input type="hidden" name="id" value="<?php echo $editId; ?>">
+                        <input type="hidden" name="existing_photo" value="<?php echo htmlspecialchars($formData['photo']); ?>">
+                    <?php endif; ?>
                     <div class="row">
 
                         <div class="col-lg-12">
@@ -499,7 +583,7 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-6">
                                                                 <input type="text" class="form-control" name="adno"
-                                                                    id="adno" required>
+                                                                    id="adno" required value="<?php echo htmlspecialchars($formData['adno']); ?>" <?php echo $editMode ? 'readonly' : ''; ?>>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -763,7 +847,7 @@ return false;
                                                     <td>
                                                         <div class="form-group">
                                                             <div class="col-lg-12">
-                                                                <select name="comm" id="comm" class="form-control" required>
+                                                                <select name="comm" id="comm" class="form-control" required <?php echo $editMode ? 'disabled' : ''; ?>>
                                                                     <option value="">Select</option>
                                                                     <option value="BC">BC</option>
                                                                     <option value="BC Muslim">BC Muslim</option>
@@ -776,7 +860,7 @@ return false;
                                                                 <br>
                                                                 <input placeholder="Enter the Community Name "
                                                                     type="text" class="form-control" name="commtext"
-                                                                    id="comms" />
+                                                                    id="comms" <?php echo $editMode ? 'disabled' : ''; ?> />
                                                             </div>
                                                         </div>
                                                     </td>
@@ -794,7 +878,7 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-12">
                                                                 <select name="subc" id="subc" class="form-control"
-                                                                    onchange="toggleOtherInput()" required>
+                                                                    onchange="toggleOtherInput()" required <?php echo $editMode ? 'disabled' : ''; ?>>
                                                                     <option value="">-- Select --</option>
                                                                     <option value="Sourashtra">Sourashtra</option>
                                                                     <option value="Others">Others</option>
@@ -803,7 +887,7 @@ return false;
                                                                 <!-- Hidden input box -->
                                                                 <input type="text" name="subcr" id="subc_other"
                                                                     class="form-control mt-2"
-                                                                    placeholder="Enter Sub Caste" style="display:none;">
+                                                                    placeholder="Enter Sub Caste" style="display:none;" <?php echo $editMode ? 'disabled' : ''; ?>>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -893,17 +977,17 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-12">
                                                                 <button type="button" class="van-btn"
-                                                                    onclick="togglePnd(true)">Yes</button>
+                                                                    onclick="togglePnd(true)" <?php echo $editMode ? 'disabled' : ''; ?>>Yes</button>
                                                                 <button type="button" class="van-btn" name="pnd"
-                                                                    onclick="togglePnd(false)">No</button>
+                                                                    onclick="togglePnd(false)" <?php echo $editMode ? 'disabled' : ''; ?>>No</button>
                                                             </div>
                                                             <div class="form-group" id="pendingFee" style="display: none">
                                                                 <br>
                                                                 <div class="col-lg-12" style="display: flex;gap: 2vw;">
                                                                     <input type="number" class=" form-control" name="pndscl"
-                                                                        id="pndscl" placeholder="Pending school fee">
+                                                                        id="pndscl" placeholder="Pending school fee" <?php echo $editMode ? 'readonly' : ''; ?>>
                                                                     <input type="number" class=" form-control" name="pndvan"
-                                                                        id="pndvan" placeholder="Pending van fee">
+                                                                        id="pndvan" placeholder="Pending van fee" <?php echo $editMode ? 'readonly' : ''; ?>>
                                                                 </div>
                                                             </div>
                                                     </td>
@@ -918,9 +1002,9 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-12">
                                                                 <button type="button" class="van-btn"
-                                                                    onclick="toggleVan(true)">Yes</button>
+                                                                    onclick="toggleVan(true)" <?php echo $editMode ? 'disabled' : ''; ?>>Yes</button>
                                                                 <button type="button" class="van-btn" name="van"
-                                                                    onclick="toggleVan(false)">No</button>
+                                                                    onclick="toggleVan(false)" <?php echo $editMode ? 'disabled' : ''; ?>>No</button>
                                                             </div>
                                                             <div class="form-group" id="VanRow" style="display: none">
                                                                 <br>
@@ -929,7 +1013,7 @@ return false;
                                                                     $sql = "SELECT DISTINCT city FROM vanfeedetails ORDER BY city ASC";
                                                                     $result = mysqli_query($conn, $sql);
                                                                     ?>
-                                                                    <select name="van" class="form-control" id="vanRowSelect">
+                                                                    <select name="van" class="form-control" id="vanRowSelect" <?php echo $editMode ? 'disabled' : ''; ?>>
                                                                         <option value="">-- Select City --</option>
                                                                         <?php
                                                                         while ($row = mysqli_fetch_assoc($result)) {
@@ -1070,7 +1154,13 @@ return false;
                                                                                 image</span><span
                                                                                 class="fileupload-exists">Change</span><input
                                                                                 type="file" name="fileToUpload"
-                                                                                id="fileToUpload" required /></span>
+                                                                                id="fileToUpload" <?php echo $editMode ? '' : 'required'; ?> /></span>
+                                                                        <?php if ($editMode && !empty($formData['photo'])): ?>
+                                                                            <div style="margin-top: 10px;">
+                                                                                <strong>Current photo:</strong><br>
+                                                                                <img src="<?php echo htmlspecialchars($formData['photo']); ?>" style="max-width: 150px; max-height: 150px;" />
+                                                                            </div>
+                                                                        <?php endif; ?>
                                                                         <a href="#"
                                                                             class="btn btn-danger fileupload-exists"
                                                                             data-dismiss="fileupload">Remove</a>
@@ -1083,10 +1173,19 @@ return false;
                                             </tbody>
                                         </table>
                                         <center>
-                                            <input type="submit" value="Submit" name="submit"
-                                                class="btn btn-primary btn-lg " />
-                                            <input type="reset" class="btn btn-success  btn-lg btn-grad">
-                                            <br><a href="home.php" class="btn btn-info btn-lg btn-grad">Back</a>
+                                            <?php if ($viewMode): ?>
+                                                <a class="btn btn-primary btn-lg" href="admission.php?id=<?php echo $editId; ?>">Edit</a>
+                                                <a href="adminview.php" class="btn btn-info btn-lg btn-grad">Back</a>
+                                            <?php elseif ($editMode): ?>
+                                                <input type="submit" value="Update" name="update" class="btn btn-primary btn-lg" />
+                                                <button type="button" class="btn btn-warning btn-lg btn-grad" onclick="confirmCancel()">
+                                                    Cancel
+                                                </button>
+                                            <?php else: ?>
+                                                <input type="submit" value="Submit" name="submit" class="btn btn-primary btn-lg" />
+                                                <input type="reset" class="btn btn-success btn-lg btn-grad" />
+                                                <a href="home.php" class="btn btn-info btn-lg btn-grad">Back</a>
+                                            <?php endif; ?>
                                         </center>
                                     </div>
                                 </div>
@@ -1094,6 +1193,31 @@ return false;
                         </div>
                     </div>
                 </form>
+                <?php if ($editMode || $viewMode): ?>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const admissionData = <?php echo json_encode($formData); ?>;
+                            for (const [key, value] of Object.entries(admissionData)) {
+                                const el = document.querySelector('[name="' + key + '"]');
+                                if (!el) continue;
+                                if (el.type === 'radio' || el.type === 'checkbox') {
+                                    const match = document.querySelector('[name="' + key + '"][value="' + value + '"]');
+                                    if (match) match.checked = true;
+                                } else {
+                                    el.value = value;
+                                }
+                            }
+
+                            <?php if ($viewMode): ?>
+                                // Disable all inputs in view mode
+                                document.querySelectorAll('#block-validate input, #block-validate select, #block-validate textarea').forEach(el => {
+                                    if (el.type === 'button' || el.type === 'submit' || el.type === 'reset') return;
+                                    el.disabled = true;
+                                });
+                            <?php endif; ?>
+                        });
+                    </script>
+                <?php endif; ?>
             </div>
         </div>
         <!--END PAGE CONTENT -->
@@ -1101,6 +1225,12 @@ return false;
     <!--END MAIN CONTAINER -->
 
     <script>
+        function confirmCancel() {
+            if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                window.location.href = 'adminview.php';
+            }
+        }
+
         function toggleOtherInput() {
             var subc = document.getElementById("subc").value;
             var otherInput = document.getElementById("subc_other");
