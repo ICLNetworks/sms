@@ -647,21 +647,20 @@ return false;
                                                     <td>
                                                         <div class="form-group">
                                                             <div class="col-lg-6">
-                                                                <select name="std" id="std" class="form-control" required>
+                                                                <?php $stdDisabled = $editMode ? 'disabled' : ''; ?>
+                                                                <select name="std" id="std" class="form-control" required <?php echo $stdDisabled; ?> >
                                                                     <option value="">Select</option>
-                                                                    <option value="LKG">LKG</option>
-                                                                    <option value="UKG">UKG</option>
-                                                                    <option value="I Std">I Std</option>
-                                                                    <option value="II Std">II Std</option>
-                                                                    <option value="III Std">III Std</option>
-                                                                    <option value="IV Std">IV Std</option>
-                                                                    <option value="V Std">V Std</option>
-                                                                    <option value="VI Std">VI Std</option>
-                                                                    <option value="VII Std">VII Std</option>
-                                                                    <option value="VIII Std">VIII Std</option>
-                                                                    <option value="IX Std">IX Std</option>
-                                                                    <option value="X Std">X Std</option>
+                                                                    <?php
+                                                                    $stdOptions = ['LKG', 'UKG', 'I Std', 'II Std', 'III Std', 'IV Std', 'V Std', 'VI Std', 'VII Std', 'VIII Std', 'IX Std', 'X Std'];
+                                                                    foreach ($stdOptions as $opt) {
+                                                                        $selected = ($formData['std'] === $opt) ? 'selected' : '';
+                                                                        echo "<option value=\"" . htmlspecialchars($opt) . "\" $selected>" . htmlspecialchars($opt) . "</option>";
+                                                                    }
+                                                                    ?>
                                                                 </select>
+                                                                <?php if ($editMode): ?>
+                                                                    <input type="hidden" name="std" value="<?php echo htmlspecialchars($formData['std']); ?>">
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                     </td>
