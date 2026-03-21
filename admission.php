@@ -505,6 +505,17 @@ return false;
             display: none
         }
 
+        @font-face {
+            font-family: 'Bamini';
+            src: url('assets/fonts/Bamini.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .bamini {
+            font-family: 'Bamini', 'Latha', 'Noto Sans Tamil', 'Nirmala UI', sans-serif !important;
+        }
+
         .van-btn {
             width: 60px;
             height: 30px;
@@ -614,7 +625,7 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-6">
                                                                 <input type="text" class="form-control" name="ayear"
-                                                                    id="ayear" required>
+                                                                    id="ayear" required value="<?php echo htmlspecialchars($formData['ayear']); ?>" <?php echo $editMode ? 'readonly' : ''; ?>>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -631,7 +642,7 @@ return false;
                                                         <div class="form-group">
                                                             <div class="col-lg-6">
                                                                 <input type="text" class="form-control" name="emisno"
-                                                                    id="emisno" required>
+                                                                    id="emisno" required value="<?php echo htmlspecialchars($formData['emisno']); ?>" <?php echo $editMode ? 'readonly' : ''; ?>>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -677,7 +688,7 @@ return false;
                                                             <div class="col-lg-6">
                                                                 <input type="Date" name="admission_date"
                                                                     class="form-control" placeholder="Admission Date"
-                                                                    min="01" max="31" required />
+                                                                    min="01" max="31" required value="<?php echo htmlspecialchars($formData['admission_date']); ?>" <?php echo $editMode ? 'readonly' : ''; ?> />
                                                             </div>
                                                         </div>
                                                     </td>
@@ -831,18 +842,25 @@ return false;
                                                     <td>
                                                         <div class="form-group">
                                                             <div class="col-lg-12">
+                                                                <?php $religionDisabled = $editMode ? 'disabled' : ''; ?>
                                                                 <select name="religion" id="religion"
-                                                                    class="form-control" required>
+                                                                    class="form-control" required <?php echo $religionDisabled; ?>>
                                                                     <option value="">Select</option>
-                                                                    <option value="Hindu">Hindu</option>
-                                                                    <option value="Muslim">Muslim</option>
-                                                                    <option value="Christian">Christian</option>
-                                                                    <option value="Others">Others</option>
+                                                                    <?php
+                                                                    $religionOptions = ['Hindu', 'Muslim', 'Christian', 'Others'];
+                                                                    foreach ($religionOptions as $opt) {
+                                                                        $selected = ($formData['religion'] === $opt) ? 'selected' : '';
+                                                                        echo "<option value=\"" . htmlspecialchars($opt) . "\" $selected>" . htmlspecialchars($opt) . "</option>";
+                                                                    }
+                                                                    ?>
                                                                 </select>
+                                                                <?php if ($editMode): ?>
+                                                                    <input type="hidden" name="religion" value="<?php echo htmlspecialchars($formData['religion']); ?>">
+                                                                <?php endif; ?>
                                                                 <br>
                                                                 <input placeholder="Enter the Reason " type="text"
                                                                     class=" form-control" name="religiontext"
-                                                                    id="religions" />
+                                                                    id="religions" <?php echo $editMode ? 'readonly' : ''; ?> />
 
 
                                                             </div>
