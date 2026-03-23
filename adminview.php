@@ -22,6 +22,7 @@ include("includes/db.conn.php");
     <!-- GLOBAL STYLES -->
     <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/plugins/Font-Awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <link rel="stylesheet" href="assets/css/theme.css" />
@@ -102,6 +103,7 @@ include("includes/db.conn.php");
                                             <th>Date of Birth</th>
 											<th>Community/Sub Caste</th>
 											<th>Photo</th>
+                                            <th>Operation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -123,25 +125,26 @@ include("includes/db.conn.php");
 											  echo "<td>".$row['dob']."</td>";
 											  echo "<td>".$row['comm']."/".$row['subc']."</td>";
 											  echo "<td class='fileupload-new thumbnail' style='height:75px!important; width:75px!important;' ><img src='".$row['photo']."'></td>";
-											  echo "</tr>";
-											 $sno++;
-											 }
-											  ?>
-											  
-											  
-                                        
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                           
+					  echo "<td class='text-center'><div class='btn-group'>";
+					  echo "<a class='btn btn-outline-primary btn-sm' href='admission.php?id=".$id."' title='Edit'><i class='fa-solid fa-pen fa-lg'></i></a>";
+					  echo "<a class='btn btn-outline-info btn-sm' href='admission.php?view=".$id."' title='View'><i class='fa-solid fa-eye fa-lg'></i></a>";
+					  echo "</div></td>";
+							 $sno++;
+							 }
+							  ?>
+						  
+						  
+					    </tbody>
+					</table>
+				</div>
+			   
                         </div>
-                    </div>
-                </div>
-            </div>
-		
-        
-               
+			    </div>
+			</div>
+			</div>
+			
+			
+			   
       </div>
           <!--END PAGE CONTENT --> 
     </div>
